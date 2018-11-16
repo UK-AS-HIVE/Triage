@@ -69,6 +69,7 @@ meteorhacks:collection-utils@1.2.0
 minifier-css@1.2.16
 minifier-js@2.0.0
 minimongo@1.0.23
+mixmax:smart-disconnect@0.0.4
 mizzao:autocomplete@0.5.1
 mizzao:timesync@0.3.4
 mizzao:user-status@0.6.6
