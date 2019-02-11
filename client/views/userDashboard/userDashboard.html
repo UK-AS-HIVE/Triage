@@ -31,6 +31,27 @@
       {{> settingsCheckbox name="associatedWithTicket" option="Notify me when I am associated with a ticket" setting=associatedWithTicket}}
     </div>
   {{/with}}
+
+  <div class="form-group">
+    <label for="autoAssociate" class="control-label">Ticket sharing:</label>
+    <!-- Auto-associated User Panel -->
+    <div name="associatedUsers" class="panel panel-default">
+      <div class="panel-heading">When I submit a ticket, automatically associate these users:</div>
+      <div class="panel-body">
+        <div class="assign-user-field">
+          <span class="icon glyphicon glyphicon-plus"></span>
+          {{>inputAutocomplete settings=userSettings name="assignUser" placeholder="Assign User"}}
+        </div>
+        {{#each autoAssociatedUserIds}}
+          {{> userPortrait userId=this associated=true onRemoveUser=onRemoveUser}}
+        {{/each}}
+        <div>
+          <span class="error">{{associateUserError}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="saved-message" class="pull-right">
     {{#if saved}}
       <span class="saved-preferences">Preferences saved. </span>

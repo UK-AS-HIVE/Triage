@@ -259,6 +259,9 @@ Meteor.users.attachSchema new SimpleSchema
     type: Boolean
   'notificationSettings.associatedWithTicket':
     type: Boolean
+  autoAssociateUserIds:
+    type: [String]
+    optional: true
   physicalDeliveryOfficeName:
     type: String
     label: "Physical Delivery Office"

@@ -9,6 +9,13 @@ Template.userDashboard.helpers
 
   saved: -> Template.instance().saved.get()
   user: -> Meteor.user()
+  autoAssociatedUserIds: -> Template.instance().autoAssociatedUserIds.get()
+  onRemoveUser: ->
+    tpl = Template.instance()
+    (e2, tpl2) ->
+      aauids = _.without tpl.autoAssociatedUserIds.get(), tpl2.data.userId
+      tpl.autoAssociatedUserIds.set aauids
+
 
 Template.userDashboard.events
   'click button[data-action=submit]': (e, tpl) ->
@@ -22,10 +29,55 @@ Template.userDashboard.events
          
     Meteor.users.update Meteor.userId(), { $set:{
       defaultQueue: defaultQueue,
-      notificationSettings: notificationSettings
+      notificationSettings: notificationSettings,
+      autoAssociateUserIds: tpl.autoAssociatedUserIds.get()
     } },
       (err, res) ->
         if res then tpl.saved.set true
+  'keyup input[name=assignUser]': (e, tpl) ->
+    if e.which is 13 and $(e.target).val().length
+      console.log 'keyup, checking username', $(e.target).val()
+      id = Meteor.call 'checkUsername', $(e.target).val(), (err, res) ->
+        if res
+          addAutoAssociatedUser tpl, res
+          $(e.target).val('')
+        else
+          tpl.associateUserError.set 'User not found.'
+          setTimeout ->
+            tpl.associateUserError.set null
+          , 3000
+
+  'autocompleteselect input[name=assignUser]': (e, tpl, doc) ->
+    addAutoAssociatedUser tpl, doc._id
+    $(e.target).val('')
+
+
+  'click a[data-action=removeUser]': (e, tpl) ->
+    # override event handler from userPortrait template
+    console.log 'clicking removeUser in userDashboard'
+    e.stopPropagation()
+    return false
+
+addAutoAssociatedUser = (tpl, associatedUserId) ->
+  console.log 'addAutoAssociatedUser'
+  #Meteor.users.update Meteor.userId(),
+  #  $addToSet:
+  #    autoAssociateUserIds: associatedUserId
+  currentAutoAssociated = tpl.autoAssociatedUserIds.get()
+  if currentAutoAssociated.indexOf associatedUserId == -1
+    currentAutoAssociated.push associatedUserId
+    tpl.autoAssociatedUserIds.set currentAutoAssociated
+  return
+  #queueMember = Queues.findOne({name: tpl.data.queueName, memberIds: Meteor.userId()})
+  associatedQueueMember = Queues.findOne({name: tpl.data.queueName, memberIds: associatedUserId})
+  if queueMember or !associatedQueueMember
+    Tickets.update tpl.data._id, { $addToSet: { associatedUserIds: associatedUserId } }
+  else
+    tpl.associateUserError.set 'You do not have permission to associate this user.'
+    setTimeout ->
+      tpl.associateUserError.set null
+    , 3000
+
 
 Template.userDashboard.rendered = () ->
   tpl = @
@@ -37,6 +89,7 @@ Template.userDashboard.rendered = () ->
 
 Template.userDashboard.onCreated ->
   @saved = new ReactiveVar(false)
+  @autoAssociatedUserIds = new ReactiveVar(Meteor.user().autoAssociateUserIds || [])
 
 Template.settingsCheckbox.helpers
   checked: ->
