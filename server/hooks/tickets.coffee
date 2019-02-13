@@ -16,10 +16,11 @@ if Npm.require('cluster').isMaster
     # Set the ticket number, store the ticket submitter, server-side timestamp, notify author.
     doc = prepareTicket userId, doc
     notifyTicketAuthor userId, doc
-    notifyAssociatedUsers doc
+
     
     # Add ticketNumber and author's displayName and department to the text index.
     author = Meteor.users.findOne(doc.authorId)
+
     Job.push new TextAggregateJob
       ticketId: doc._id
       text: [ author?.displayName, author?.department, doc.ticketNumber?.toString() ]
@@ -31,6 +32,28 @@ if Npm.require('cluster').isMaster
       Job.push new TextAggregateJob
         ticketId: doc._id
         text: text
+
+  Tickets.after.insert (userId, ticket) ->
+    #Auto-associate users
+    author = Meteor.users.findOne(ticket.authorId)
+    console.log "Auto-associating users for new ticket #{ticket._id} from #{author.username}"
+    if author.autoAssociateUserIds?.length
+      ticket.associatedUserIds = _.uniq(ticket.associatedUserIds.concat author.autoAssociateUserIds)
+      Tickets.update ticket._id, {
+        $set: {
+          associatedUserIds: ticket.associatedUserIds
+        }
+      }
+      Changelog.direct.insert
+        ticketId: ticket._id
+        timestamp: new Date()
+        authorId: author?._id
+        authorName: author?.username
+        authorEmail: author.mail
+        type: "field"
+        field: "associatedUserIds"
+        newValue: Meteor.users.find({_id: {$in: author.autoAssociateUserIds}}).map( (u) -> u.username ).join ','
+    notifyAssociatedUsers ticket
 
   Tickets.before.update (userId, doc, fieldNames, modifier, options) ->
     _.each fieldNames, (fn) ->

@@ -66,6 +66,7 @@ addAutoAssociatedUser = (tpl, associatedUserId) ->
   currentAutoAssociated = tpl.autoAssociatedUserIds.get()
   if currentAutoAssociated.indexOf associatedUserId == -1
     currentAutoAssociated.push associatedUserId
+    currentAutoAssociated = _.uniq currentAutoAssociated
     tpl.autoAssociatedUserIds.set currentAutoAssociated
   return
   #queueMember = Queues.findOne({name: tpl.data.queueName, memberIds: Meteor.userId()})
