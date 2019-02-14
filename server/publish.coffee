@@ -116,6 +116,9 @@ Meteor.publish 'allUserData', ->
   if @userId
     Meteor.users.find {}, { fields: { '_id': 1, 'username': 1, 'mail': 1, 'displayName': 1, 'department': 1, 'physicalDeliveryOfficeName': 1, 'status.online': 1, 'status.idle': 1 } }
 
+Meteor.publish 'usersWhoAutoAssociateMe', ->
+  Meteor.users.find { autoAssociateUserIds: {$in: [@userId]}}, { 'autoAssociateUserIds': 1 }
+
 Meteor.publish 'queueNames', ->
   if @userId
     Queues.find {}, { fields: { 'name': 1, 'memberIds': 1, 'stats': 1 } }

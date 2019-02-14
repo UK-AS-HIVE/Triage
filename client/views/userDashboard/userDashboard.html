@@ -50,6 +50,22 @@
         </div>
       </div>
     </div>
+    <!-- Show the user who has them marked to auto-associate, so they can opt out -->
+    <div name="autoAssociatedByUserIds" class="panel panel-default">
+      <div class="panel-heading">These users auto-associate you with their tickets:</div>
+      <div class="panel-body">
+        <!-- <div class="assign-user-field">
+          <span class="icon glyphicon glyphicon-plus"></span>
+          {{>inputAutocomplete settings=userSettings name="assignUser" placeholder="Assign User"}}
+        </div> -->
+        {{#each autoAssociatedByUserIds}}
+          {{> userPortrait userId=this associated=true onRemoveUser=onRemoveAutoAssociatedByUser}}
+        {{/each}}
+        <div>
+          <span class="error">{{associateUserError}}</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="saved-message" class="pull-right">

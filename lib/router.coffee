@@ -107,6 +107,9 @@ Router.map ->
 
   @route 'userDashboard',
     path: '/my/dashboard'
+    waitOn: ->
+      @subscribe 'userData'
+      @subscribe 'usersWhoAutoAssociateMe'
     onBeforeAction: ->
       Session.set 'queueName', null
       Session.set 'pseudoQueue', null

@@ -44,3 +44,13 @@ Meteor.methods
         field: 'status'
         oldValue: ticket.status
         newValue: 'Closed'
+
+  removeUserFromAutoAssociation: (associatedByUserIds) ->
+    currentUserId = @userId
+    console.log 'removeUserFromAutoAssociation', associatedByUserIds
+    _.each associatedByUserIds, (uid) ->
+      Meteor.users.update uid, {
+        $pull: {
+          autoAssociateUserIds: currentUserId
+        }
+      }
