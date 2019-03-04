@@ -1,11 +1,6 @@
 Meteor.startup ->
   Tickets._ensureIndex
-    title: "text"
-    body: "text"
-    additionalText: "text"
-    authorName: "text"
-    ticketNumber: "text"
-    formFields: "text"
+    "$**": "text"
 
   Changelog._ensureIndex
     ticketId: 1

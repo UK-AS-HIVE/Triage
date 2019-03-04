@@ -32,5 +32,27 @@ Migrations.add
         $set:
           lastUpdated: Changelog.findOne(ticketId: doc._id, {sort: {timestamp: -1}})?.timestamp || doc.submittedTimestamp
 
+Migrations.add
+  version: 6
+  up: ->
+    try
+      Tickets._dropIndex "title_text_body_text_additionalText_text_authorName_text_ticketNumber_text_formFields_text"
+    catch e
+      console.log e
+    Tickets._ensureIndex
+      "$**": "text"
+  down: ->
+    try
+      Tickets._dropIndex "$**_text"
+    catch e
+      console.log e
+    Tickets._ensureIndex
+      title: "text"
+      body: "text"
+      additionalText: "text"
+      authorName: "text"
+      ticketNumber: "text"
+      formFields: "text"
+
 Meteor.startup ->
-  Migrations.migrateTo(5)
+  Migrations.migrateTo(6)
