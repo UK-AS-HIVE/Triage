@@ -276,14 +276,14 @@ body {
   transition: opacity 200ms ease;
 }
 
-.assign-user-field {
+.associate-user-field {
   width: 200px;
   vertical-align: middle;
   white-space: nowrap;
   position: relative;
 }
 
-.assign-user-field input {
+.associate-user-field input {
   width: 40px;
   height: 40px;
   background: #bbb;
@@ -305,20 +305,20 @@ body {
   
 }
 
-.assign-user-field input::-webkit-input-placeholder {
+.associate-user-field input::-webkit-input-placeholder {
    color: #000;
 }
-.assign-user-field input:-moz-placeholder { /* Firefox 18- */
+.associate-user-field input:-moz-placeholder { /* Firefox 18- */
    color: #000;  
 }
-.assign-user-field input::-moz-placeholder {  /* Firefox 19+ */
+.associate-user-field input::-moz-placeholder {  /* Firefox 19+ */
    color: #000;  
 }
-.assign-user-field input:-ms-input-placeholder {  
+.associate-user-field input:-ms-input-placeholder {
    color: #000;  
 }
 
-.assign-user-field .icon{
+.associate-user-field .icon{
   position: absolute;
   display: block;
   top: 50%;
@@ -328,17 +328,17 @@ body {
   color: #000;
 }
 
-.assign-user-field input:focus, .assign-user-field input:active {
+.associate-user-field input:focus, .associate-user-field input:active {
   outline:none;
 }
-.assign-user-field input:hover, .assign-user-field input:focus {
+.associate-user-field input:hover, .associate-user-field input:focus {
     outline:none; 
     width: 200px;
 }
-.assign-user-field:hover .icon +input{
+.associate-user-field:hover .icon +input{
     width: 200px;
 }
-.assign-user-field:hover .icon {
+.associate-user-field:hover .icon {
     color: #fff;
 }
 
