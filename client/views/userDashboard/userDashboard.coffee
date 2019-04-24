@@ -8,6 +8,7 @@ Template.userDashboard.helpers
     Meteor.user()?.notificationSettings
 
   saved: -> Template.instance().saved.get()
+  unsavedChanges: -> Template.instance().unsavedChanges.get()
   user: -> Meteor.user()
   autoAssociatedUserIds: -> Template.instance().autoAssociatedUserIds.get()
   onRemoveUser: ->
@@ -26,6 +27,9 @@ Template.userDashboard.helpers
       tpl.autoAssociatedByUserIdsToRemove.set removed
 
 Template.userDashboard.events
+  'change select,input': (e, tpl) ->
+    tpl.saved.set false 
+    tpl.unsavedChanges.set true
   'click button[data-action=submit]': (e, tpl) ->
     defaultQueue = tpl.$('select[name=defaultQueue]').val()
     notificationSettings = {}
@@ -41,7 +45,9 @@ Template.userDashboard.events
       autoAssociateUserIds: tpl.autoAssociatedUserIds.get()
     } },
       (err, res) ->
-        if res then tpl.saved.set true
+        if res
+          tpl.unsavedChanges.set false
+          tpl.saved.set true
 
     Meteor.call 'removeUserFromAutoAssociation', tpl.autoAssociatedByUserIdsToRemove.get()
   'keyup input[name=assignUser]': (e, tpl) ->
@@ -75,6 +81,7 @@ addAutoAssociatedUser = (tpl, associatedUserId) ->
     currentAutoAssociated = _.uniq currentAutoAssociated
     tpl.autoAssociatedUserIds.set currentAutoAssociated
 
+###
 Template.userDashboard.rendered = () ->
   tpl = @
   tpl.find('#saved-message')._uihooks =
@@ -82,10 +89,11 @@ Template.userDashboard.rendered = () ->
       $(node).hide().insertBefore(next).fadeIn(100).delay(3000).fadeOut 500, () ->
         @remove()
         tpl.saved.set false
+###
 
 Template.userDashboard.onCreated ->
   @saved = new ReactiveVar(false)
-  console.log Meteor.user()
+  @unsavedChanges = new ReactiveVar(false)
   @autoAssociatedUserIds = new ReactiveVar(Meteor.user().autoAssociateUserIds || [])
   @autoAssociatedByUserIds = new ReactiveVar(
     Meteor.users
