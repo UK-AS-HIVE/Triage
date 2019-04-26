@@ -116,13 +116,13 @@
 </template>
 
 <template name="ticketInfoPanels">
-  <!-- Assigned User Panel --> 
+  <!-- Associated User Panel --> 
   <div name="associatedUsers" class="panel panel-default">
-    <div class="panel-heading">Assigned Users</div>
+    <div class="panel-heading">Associated Users</div>
     <div class="panel-body">
-      <div class="assign-user-field">
+      <div class="associate-user-field">
         <span class="icon glyphicon glyphicon-plus"></span>
-        {{>inputAutocomplete settings=userSettings name="assignUser" placeholder="Assign User"}} 
+        {{>inputAutocomplete settings=userSettings name="associateUser" placeholder="Associate User"}} 
       </div>
       {{#each associatedUserIds}}
         {{> userPortrait userId=this associated=true}}

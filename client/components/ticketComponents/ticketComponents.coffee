@@ -120,7 +120,7 @@ Template.ticketInfoPanels.events
     Tickets.update tpl.data._id, { $addToSet: { tags: doc.name } }
     $(e.target).val('')
 
-  'keyup input[name=assignUser]': (e, tpl) ->
+  'keyup input[name=associateUser]': (e, tpl) ->
     if e.which is 13 and $(e.target).val().length
       id = Meteor.call 'checkUsername', $(e.target).val(), (err, res) ->
         if res
@@ -132,7 +132,7 @@ Template.ticketInfoPanels.events
             tpl.associateUserError.set null
           , 3000
 
-  'autocompleteselect input[name=assignUser]': (e, tpl, doc) ->
+  'autocompleteselect input[name=associateUser]': (e, tpl, doc) ->
     associateUser tpl, doc._id
     $(e.target).val('')
 
