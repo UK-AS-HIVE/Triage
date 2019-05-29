@@ -1,6 +1,32 @@
 limit = Meteor.settings?.public?.limitDefault || 20
 offsetIncrement = Meteor.settings?.public?.offsetIncrement || 20
 
+Template.ticketTable.onCreated ->
+  @ticketOrder = new ReactiveVar []
+
+  updateTicketOrder = =>
+    queueName = Session.get('queueName') || _.pluck Queues.find().fetch(), 'name'
+    filter = {
+      queueName: queueName
+      status: Iron.query.get 'status'
+      tag: Iron.query.get 'tag'
+      user: Iron.query.get 'user'
+      associatedUser: Iron.query.get 'associatedUser'
+    }
+    mongoFilter = Filter.toMongoSelector filter
+    sort = {}
+    sort[Session.get 'sortBy'] = Session.get 'sortDirection'
+    @ticketOrder.set Tickets.find(mongoFilter, {sort: sort}).map (t) -> t._id
+
+  debouncedUpdateTicketOrder = _.debounce updateTicketOrder, 0
+
+  @observeHandle = Tickets.find({}).observe
+    added: -> debouncedUpdateTicketOrder()
+    removed: -> debouncedUpdateTicketOrder()
+
+Template.ticketTable.onDestroyed ->
+  @observeHandle.stop()
+
 Template.ticketTable.helpers
   search: ->
     Iron.query.get('search')? or Iron.query.get('status')? or Iron.query.get('tag')? or Iron.query.get('user')?
@@ -18,18 +44,8 @@ Template.ticketTable.helpers
   nextDisabled: ->
     if (Session.get('offset') + offsetIncrement + 1) > Counts.get('ticketCount') then "disabled"
   tickets: ->
-    queueName = Session.get('queueName') || _.pluck Queues.find().fetch(), 'name'
-    filter = {
-      queueName: queueName
-      status: Iron.query.get 'status'
-      tag: Iron.query.get 'tag'
-      user: Iron.query.get 'user'
-      associatedUser: Iron.query.get 'associatedUser'
-    }
-    mongoFilter = Filter.toMongoSelector filter
-    sort = {}
-    sort[Session.get 'sortBy'] = Session.get 'sortDirection'
-    Tickets.find mongoFilter, {sort: sort}
+    Template.instance().ticketOrder.get().map (ticketId) ->
+      Tickets.findOne ticketId
   noTickets: ->
     Tickets.find().count() is 0
   clientCount: ->
@@ -45,12 +61,13 @@ Template.ticketTable.helpers
 
 Template.ticketTable_columnHeading.helpers
   columnWidth: (column) ->
-    if column == 'subject'
-      4
-    else if column == 'requester' or column == 'associated'
-      2
-    else
-      1
+    'col-md-' +
+      if column == 'subject'
+        4
+      else if column == 'requester' or column == 'associated'
+        2
+      else
+        1
   sortByIs: (columnName) -> columnName == Session.get 'sortBy'
   sortDirectionIs: (sortDir) -> sortDir == Session.get 'sortDirection'
 
