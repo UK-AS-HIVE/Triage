@@ -27,11 +27,42 @@ Template.ticketTable.helpers
       associatedUser: Iron.query.get 'associatedUser'
     }
     mongoFilter = Filter.toMongoSelector filter
-    Tickets.find mongoFilter, {sort: {submittedTimestamp: -1}}
+    sort = {}
+    sort[Session.get 'sortBy'] = Session.get 'sortDirection'
+    Tickets.find mongoFilter, {sort: sort}
   noTickets: ->
     Tickets.find().count() is 0
   clientCount: ->
     Tickets.find().count()
+  columns: ->
+      ticketNumber: '#'
+      title: 'Subject'
+      requester: 'Requester'
+      associatedUserIds: 'Associated'
+      status: 'Status'
+      lastUpdated: 'Updated'
+      submittedTimestamp: 'Submitted'
+
+Template.ticketTable_columnHeading.helpers
+  columnWidth: (column) ->
+    if column == 'subject'
+      4
+    else if column == 'requester' or column == 'associated'
+      2
+    else
+      1
+  sortByIs: (columnName) -> columnName == Session.get 'sortBy'
+  sortDirectionIs: (sortDir) -> sortDir == Session.get 'sortDirection'
+
+Template.ticketTable_columnHeading.events
+  'click .field-table-heading': (e, tpl) ->
+    console.log 'click', @, arguments
+    sortBy = Session.get 'sortBy'
+    if sortBy == @name
+      sortDirection = Session.get 'sortDirection'
+      Session.set 'sortDirection', -1*sortDirection
+    else
+      Session.set 'sortBy', @name
 
 Template.ticketTable.events
   'click button[data-action=nextPage]': (e, tpl) ->

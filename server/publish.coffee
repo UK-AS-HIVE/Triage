@@ -1,8 +1,10 @@
-Meteor.publishComposite 'tickets', (filter, offset, limit) ->
+Meteor.publishComposite 'tickets', (filter, sortBy, sortDirection, offset, limit) ->
+  sort = {}
+  sort[sortBy] = sortDirection
   if offset < 0 then offset = 0
   if Filter.verifyFilterObject filter, _.pluck(Queues.find({memberIds: @userId}).fetch(), 'name'), @userId
     mongoFilter = Filter.toMongoSelector filter
-    [ticketSet, facets] = Tickets.findWithFacets(mongoFilter, {sort: {submittedTimestamp: -1}, limit: limit, skip: offset})
+    [ticketSet, facets] = Tickets.findWithFacets(mongoFilter, {sort: sort, limit: limit, skip: offset})
     ticketSet = _.pluck ticketSet.fetch(), '_id'
   else
     ticketSet = []
@@ -11,8 +13,7 @@ Meteor.publishComposite 'tickets', (filter, offset, limit) ->
       Counts.publish(this, 'ticketCount', Tickets.find(mongoFilter), { noReady: true })
 
       Tickets.find { _id: { $in: ticketSet } },
-        sort:
-          submittedTimestamp: -1
+        sort: sort
         fields:
           emailMessageIDs: 0
           additionalText: 0

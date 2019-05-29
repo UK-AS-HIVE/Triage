@@ -22,6 +22,8 @@ queueBeforeAction = (router, options) ->
   Session.set 'offset', (Number(Iron.query.get('start')) || 0)
 
   queueName = options?.queueName
+  Session.setDefault 'sortBy', 'submittedTimestamp'
+  Session.setDefault 'sortDirection', -1
 
   router.next()
   if Meteor.userId()
@@ -39,7 +41,7 @@ queueBeforeAction = (router, options) ->
     if Session.get('offset') < 1
       renderedTime = new Date()
       Meteor.subscribe 'newTickets', filter, renderedTime
-    Meteor.subscribe 'tickets', filter, Session.get('offset'), limit, {
+    Meteor.subscribe 'tickets', filter, Session.get('sortBy'), Session.get('sortDirection'), Session.get('offset'), limit, {
       onReady: ->
         if options?.clearQueueBadge
           Meteor.call 'clearQueueBadge', queueName
