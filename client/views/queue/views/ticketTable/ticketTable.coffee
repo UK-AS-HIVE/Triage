@@ -24,6 +24,8 @@ Template.ticketTable.onCreated ->
     added: -> debouncedUpdateTicketOrder()
     removed: -> debouncedUpdateTicketOrder()
 
+  @autorun updateTicketOrder
+
 Template.ticketTable.onDestroyed ->
   @observeHandle.stop()
 
@@ -61,15 +63,23 @@ Template.ticketTable.helpers
 
 Template.ticketTable_columnHeading.helpers
   columnWidth: (column) ->
-    'col-md-' +
+    colWidth = 'col-md-' +
       if column == 'subject'
         4
       else if column == 'requester' or column == 'associated'
         2
       else
         1
+    colHiddenXS =
+      if column == 'lastUpdated' or column == 'submittedTimestamp'
+        'hidden-xs'
+      else
+        ''
+    colWidth + ' ' + colHiddenXS
   sortByIs: (columnName) -> columnName == Session.get 'sortBy'
   sortDirectionIs: (sortDir) -> sortDir == Session.get 'sortDirection'
+  labelFor: (value) ->
+    Tickets.simpleSchema()._schema[value]?.label || value
 
 Template.ticketTable_columnHeading.events
   'click .field-table-heading': (e, tpl) ->
