@@ -8,6 +8,7 @@ Template.queuebar.helpers
       return "active"
     else
       return null
+  encodeURIComponent: (s) -> encodeURIComponent s
   globalClass: ->
     if Session.get('pseudoQueue') is 'globalQueue' then return 'active'
   userClass: ->

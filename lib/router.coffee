@@ -63,7 +63,7 @@ Router.map ->
     action: ->
       queue = Meteor.user()?.defaultQueue || Queues.findOne({memberIds: Meteor.userId()})?.name
       if queue
-        @redirect '/queue/'+queue
+        @redirect '/queue/'+encodeURIComponent(queue)
       else
         @redirect '/my/tickets'
 
