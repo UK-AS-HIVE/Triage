@@ -44,3 +44,23 @@ Meteor.methods
         field: 'status'
         oldValue: ticket.status
         newValue: 'Closed'
+
+  updateQueueSettings: (queueName, settings) ->
+    queue = Queues.findOne {name: queueName}
+    unless queue?.managerIds? and queue.managerIds.indexOf(@userId) > -1
+      throw new Meteor.Error 403, "Access denied.  Only queue managers may change settings."
+    console.log "updating #{queueName} settings to ", settings
+    Queues.update queue._id,
+      $set:
+        _.omit settings, '_id'
+
+  getPotentialExtraFields: (queueName) ->
+    managerIds = Queues.findOne({name: queueName})?.managerIds
+    unless managerIds and managerIds.indexOf(@userId) > -1
+      throw new Meteor.Error 403, "Access denied.  Only queue managers may change settings."
+    # This would be better with aggregate, but needs Mongo 3.4 for
+    # the $objectToArray operator, so just do it the long way
+    keys = []
+    Tickets.find({queueName: queueName}).forEach (d) ->
+      keys = _.uniq (keys.concat _.keys(d) )
+    _.difference keys, ['_id'], Tickets.simpleSchema()._schemaKeys

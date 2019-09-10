@@ -160,6 +160,10 @@
   securityGroups:
     type: [String]
     label: "Security Groups"
+  managerIds:
+    type: [String]
+    label: "Queue Managers"
+    optional: true
   stats:
     type: Object
     optional: true
@@ -192,6 +196,12 @@
     optional: true
   'settings.notifyOnAPISubmit':
     type: Boolean
+    optional: true
+  'settings.extraColumns':
+    type: [String]
+    optional: true
+  'settings.emailIngestionPrefix':
+    type: String
     optional: true
 
 notificationSettingDefaults =

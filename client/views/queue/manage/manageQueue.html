@@ -1,0 +1,111 @@
+<template name="manageQueue">
+  
+
+  <div class="col-md-8 col-md-offset-2">
+    <small><a href="/queue/{{queueName}}">back to queue</a></small>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">Queue Members</div>
+      </div>
+      <div class="panel-body">
+        <p>Queue members can fully access all tickets in this queue, as well as internal notes.</p>
+        <div class="associate-user-field">
+          <span class="icon glyphicon glyphicon-plus"></span>
+          {{>inputAutocomplete settings=userSettings name="addMember" placeholder="Add Member"}}
+        </div>
+        {{#each memberId in memberIds}}
+          {{> userPortrait userId=memberId associated=true onRemoveUser=onRemoveMember}}
+        {{/each}}
+        <div>
+          <span class="error">{{addMemberError}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">Queue Managers</div>
+      </div>
+      <div class="panel-body">
+        <p>Queue managers can manage the settings for this queue.</p>
+        <div class="associate-user-field">
+          <span class="icon glyphicon glyphicon-plus"></span>
+          {{>inputAutocomplete settings=userSettings name="addManager" placeholder="Add Manager"}}
+        </div>
+        {{#each managerId in managerIds}}
+          {{> userPortrait userId=managerId associated=true onRemoveUser=onRemoveManager}}
+        {{/each}}
+        <div>
+          <span class="error">{{addManagerError}}</span>
+        </div>
+      </div>
+    </div>
+      
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">Extra columns</div>
+      </div>
+      <div class="panel-body">
+        <p>Select extra ticket fields to include in the ticket list table</p>
+        {{#each extraColumn in extraColumns}}
+          <input type="checkbox" class="extra-column-checkbox" data-value="{{extraColumn}}" checked={{checkedIf extraColumn}}> {{labelFor extraColumn}}
+        {{/each}}
+      </div>
+    </div>
+
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">E-mailed Ticket Ingestion</div>
+      </div>
+      <div class="panel-body">
+        <p>When an e-mail is sent to the following address, it will become a new ticket this queue:</p>
+        <form class="form-inline">
+          <div class="form-group">
+            <input type="text" value={{settings.emailIngestionPrefix}} placeholder="{{queueName}}" name="email-ingestion-prefix" class="form-control col-md-4" style="text-align: right">
+          </div>
+          <div class="form-control-static">@{{hostname}}</div>
+        </form>
+      </div>
+    </div>
+
+    <!--
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-title">Templated responses</div>
+      </div>
+      <div class="panel-body">
+        <p>Add templated responses for quick responses to the most common types of tickets.</p>
+
+        <form>
+          <div class="form-group">
+            <label for="templated-response-title">Title</label>
+            <input type="text" placeholder="Title" name="templated-response-title" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="templated-response-body">Template Body</label>
+            <textarea name="templated-response-body" class="form-control"></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+    -->
+
+    <div class="floating-footer-spacer"></div>
+
+    <footer class="{{#if unsavedChanges}}floating-footer{{else}}normal-footer{{/if}}">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="btn btn-primary" name="btn-save" disabled="{{#if unsavedChanges}}{{else}}disabled{{/if}}">
+            Save
+          </button>
+          {{#if unsavedChanges}}
+            There are unsaved changes.
+          {{/if}}
+       </div>
+      </div>
+    </footer>
+    
+  </div>
+</template>
+

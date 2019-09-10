@@ -78,6 +78,15 @@ Router.map ->
         clearQueueBadge: true
         filterByUserId: false
 
+  @route 'manageQueue',
+    path: '/queue/:queueName/manage'
+    onBeforeAction: ->
+      queueBeforeAction @,
+        queueName: @params.queueName
+        pseudoQueue: null
+        clearQueueBadge: false
+        filterByUserId: false
+
   @route 'userQueue',
     path: '/my/tickets'
     template: 'queue'

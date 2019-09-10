@@ -681,3 +681,32 @@ blockquote {
   width: 100%;
 }
  
+/** Floating footer for showing e.g. Save buttons when data has only changed on a form **/
+.floating-footer-spacer {
+  height: 60px;
+}
+
+.floating-footer {
+  position: fixed;
+  padding: 15px;
+  bottom: 0;
+  width: 100%;
+  background: white;
+  transition: bottom 0.5s;
+  z-index: 100;
+  left: 0;
+  border-top: 1px solid #ddd;
+}
+
+.normal-footer {
+  position: fixed;
+  padding: 15px;
+  bottom: -100px;
+  width: 100%;
+  background: white;
+  transition: bottom 0.5s;
+  transition-delay: 1s;
+  left: 0;
+  border-top: 1px solid #ddd;
+}
+

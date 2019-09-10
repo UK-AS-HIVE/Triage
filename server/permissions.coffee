@@ -35,6 +35,13 @@
     return false
   remove: -> false
 
+Queues.allow
+  insert: -> false
+  update: (userId, doc) ->
+    queue = Queues.findOne {name: doc.name}
+    queue?.managerIds? and queue.managerIds.indexOf(userId) > -1
+  remove: -> false
+
 Meteor.users.allow
   insert: -> false
   update: (userId, doc, fields, modifier) ->
