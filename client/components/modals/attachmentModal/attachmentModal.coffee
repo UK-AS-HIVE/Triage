@@ -4,7 +4,7 @@ Template.attachmentModal.helpers
   fileIsImage: ->
     _.contains [ 'jpg', 'jpeg', 'gif', 'bmp', 'png', 'tiff', 'tif', 'cr2', 'tga' ], @filename.substr(@filename.lastIndexOf('.')+1).toLowerCase()
   fileIsPdf: ->
-    @filename.substr(@filename.indexOf('.')+1) is 'pdf'
+    @filename.toLowerCase().endsWith '.pdf'
   encodedURI: ->
     Meteor.absoluteUrl() + 'file/' + encodeURIComponent(@filenameOnDisk)
   encodedDownloadURI: ->
