@@ -1,57 +1,55 @@
 {
+  "lockfileVersion": 1,
   "dependencies": {
+    "addressparser": {
+      "version": "0.3.2",
+      "resolved": "https://registry.npmjs.org/addressparser/-/addressparser-0.3.2.tgz",
+      "integrity": "sha1-WYc/Nej89sc2HBAjkmHXbhU0i7I="
+    },
+    "array.prototype.findindex": {
+      "version": "1.0.0",
+      "resolved": "https://registry.npmjs.org/array.prototype.findindex/-/array.prototype.findindex-1.0.0.tgz",
+      "integrity": "sha1-GWbvpZ980oERTTfvVC9RIB5yuP0="
+    },
+    "encoding": {
+      "version": "0.1.12",
+      "resolved": "https://registry.npmjs.org/encoding/-/encoding-0.1.12.tgz",
+      "integrity": "sha1-U4tm8+5izRq1HsMjgp0flIDHS+s="
+    },
+    "extend": {
+      "version": "3.0.2",
+      "resolved": "https://registry.npmjs.org/extend/-/extend-3.0.2.tgz",
+      "integrity": "sha512-fjquC59cD7CyW6urNXK0FBufkZcoiGG80wTuPujX590cB5Ttln20E2UB4S/WARVqhXffZl2LNgS+gQdPIIim/g=="
+    },
+    "iconv-lite": {
+      "version": "0.4.24",
+      "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz",
+      "integrity": "sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA=="
+    },
     "mailparser": {
       "version": "0.5.1",
       "resolved": "https://registry.npmjs.org/mailparser/-/mailparser-0.5.1.tgz",
-      "from": "mailparser@0.5.1",
-      "dependencies": {
-        "encoding": {
-          "version": "0.1.12",
-          "resolved": "https://registry.npmjs.org/encoding/-/encoding-0.1.12.tgz",
-          "from": "encoding@0.1.12",
-          "dependencies": {
-            "iconv-lite": {
-              "version": "0.4.13",
-              "resolved": "https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.13.tgz",
-              "from": "iconv-lite@0.4.13"
-            }
-          }
-        },
-        "mime": {
-          "version": "1.3.4",
-          "resolved": "https://registry.npmjs.org/mime/-/mime-1.3.4.tgz",
-          "from": "mime@1.3.4"
-        },
-        "mimelib": {
-          "version": "0.2.19",
-          "resolved": "https://registry.npmjs.org/mimelib/-/mimelib-0.2.19.tgz",
-          "from": "mimelib@0.2.19",
-          "dependencies": {
-            "addressparser": {
-              "version": "0.3.2",
-              "resolved": "https://registry.npmjs.org/addressparser/-/addressparser-0.3.2.tgz",
-              "from": "addressparser@0.3.2"
-            }
-          }
-        },
-        "uue": {
-          "version": "2.1.1",
-          "resolved": "https://registry.npmjs.org/uue/-/uue-2.1.1.tgz",
-          "from": "uue@2.1.1",
-          "dependencies": {
-            "array.prototype.findindex": {
-              "version": "1.0.0",
-              "resolved": "https://registry.npmjs.org/array.prototype.findindex/-/array.prototype.findindex-1.0.0.tgz",
-              "from": "array.prototype.findindex@1.0.0"
-            },
-            "extend": {
-              "version": "3.0.0",
-              "resolved": "https://registry.npmjs.org/extend/-/extend-3.0.0.tgz",
-              "from": "extend@3.0.0"
-            }
-          }
-        }
-      }
+      "integrity": "sha1-gpwy7kxAkqWxkOwL6uKA+jP8ClU="
+    },
+    "mime": {
+      "version": "1.6.0",
+      "resolved": "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz",
+      "integrity": "sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg=="
+    },
+    "mimelib": {
+      "version": "0.2.19",
+      "resolved": "https://registry.npmjs.org/mimelib/-/mimelib-0.2.19.tgz",
+      "integrity": "sha1-N+yQpqx9AJVIUdCywxYY8KSdoO4="
+    },
+    "safer-buffer": {
+      "version": "2.1.2",
+      "resolved": "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz",
+      "integrity": "sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg=="
+    },
+    "uue": {
+      "version": "2.1.1",
+      "resolved": "https://registry.npmjs.org/uue/-/uue-2.1.1.tgz",
+      "integrity": "sha1-L+81aZbbtNTdsi0m28L8uOL8egA="
     }
   }
 }
