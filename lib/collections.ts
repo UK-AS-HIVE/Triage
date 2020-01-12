@@ -5,7 +5,34 @@ export const UserStats = new Mongo.Collection('userStats');
 
 export const TicketStats = new Mongo.Collection('ticketStats');
 
-export const Tickets = new Mongo.Collection('tickets');
+export interface Ticket {
+  title: string;
+  body: string;
+  formFields?: Object;
+  authorId: string;
+  authorName: string;
+  status: string;
+  tags: string[];
+  submissionData?: {
+    method?: 'Web' | 'Email' | 'Form' | 'Mobile';
+    ipAddress?: string;
+    hostname?: string;
+  }
+  submittedTimestamp: Date;
+  lastUpdated: Date;
+  timeToClose?: number;
+  closedTimestamp?: Date;
+  closedByUserId?: string;
+  closedByUsername?: string;
+  queueName: string;
+  associatedUserIds?: string[];
+  attachmentIds?: string[];
+  ticketNumber?: number;
+  submittedByUserId?: string;
+  emailMessageIDs?: string[];
+  additionalText?: string[];
+}
+export const Tickets = new Mongo.Collection<Ticket>('tickets');
 
 Tickets.attachSchema(new SimpleSchema({
   title: {
@@ -129,7 +156,21 @@ export const TicketFlags = new Mongo.Collection('ticketFlags');
     blackbox: true
   */
 
-export const Changelog = new Mongo.Collection('changelog');
+export interface Change {
+  ticketId: string;
+  timestamp: Date;
+  authorId?: string;
+  authorName?: string;
+  authorEmail?: string;
+  type: 'note' | 'field' | 'attachment';
+  field?: string;
+  message?: string;
+  oldValue?: string;
+  newValue?: string;
+  otherId?: string;
+  internal?: boolean;
+}
+export const Changelog = new Mongo.Collection<Change>('changelog');
 
 Changelog.attachSchema(new SimpleSchema({
   ticketId: {
@@ -192,7 +233,30 @@ Changelog.attachSchema(new SimpleSchema({
   }
 }));
 
-export const Queues = new Mongo.Collection('queues');
+export interface Queue {
+  name: string;
+  memberIds?: string[];
+  securityGroups: string[];
+  stats?: {
+    week: {
+      numSubmitted?: number;
+      avgTimeToClose?: number;
+    }
+    month: {
+      numSubmitted?: number;
+      avgTimeToClose?: number;
+    }
+    weeklyLeader: {
+      username?: string;
+      numClosed?: number;
+      avgTimeToClose?: number;
+    }
+  }
+  settings?: {
+    notifyOnAPISubmit?: boolean;
+  }
+}
+export const Queues = new Mongo.Collection<Queue>('queues');
 
 Queues.attachSchema(new SimpleSchema({
   name: {
@@ -360,7 +424,11 @@ Meteor.users.attachSchema(new SimpleSchema({
   }
 }));
 
-export const Tags = new Mongo.Collection('tags');
+export interface Tag {
+  name: string;
+  lastUse: Date;
+}
+export const Tags = new Mongo.Collection<Tag>('tags');
 
 Tags.attachSchema(new SimpleSchema({
   name: {
@@ -372,7 +440,11 @@ Tags.attachSchema(new SimpleSchema({
   }
 }));
 
-export const Statuses = new Mongo.Collection('statuses');
+export interface Status {
+  name: string;
+  lastUse: Date;
+}
+export const Statuses = new Mongo.Collection<Status>('statuses');
 
 Statuses.attachSchema(new SimpleSchema({
   name: {
@@ -384,7 +456,12 @@ Statuses.attachSchema(new SimpleSchema({
   }
 }));
 
-export const QueueBadgeCounts = new Mongo.Collection('queueBadgeCounts');
+export interface QueueBadgeCount {
+  userId: string;
+  queueName: string;
+  count: number;
+}
+export const QueueBadgeCounts = new Mongo.Collection<QueueBadgeCount>('queueBadgeCounts');
 QueueBadgeCounts.attachSchema(new SimpleSchema({
   userId: {
     type: String,
