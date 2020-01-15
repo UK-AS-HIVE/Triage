@@ -10,7 +10,7 @@
     <ul class="nav navbar-nav">
       {{#each queue}}
         <li class="{{active}}">
-          <a name="{{name}}" href="/queue/{{name}}">{{name}} 
+          <a name="{{name}}" href="/queue/{{encodeURIComponent name}}">{{name}} 
             {{#if count}} <span class="label label-danger label-as-badge">{{count}} new</span>{{/if}}
           </a>
         </li>
