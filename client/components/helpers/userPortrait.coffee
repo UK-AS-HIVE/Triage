@@ -8,8 +8,12 @@ Template.userPortrait.helpers
 Template.userPortrait.events
   'click a[data-action=removeUser]': (e, tpl) ->
     e.stopPropagation()
-    ticketId = Template.parentData(2)._id
-    Tickets.update {_id: ticketId}, {$pull: {associatedUserIds: this.userId}}
+    if typeof tpl.data.onRemoveUser == "function"
+      console.log 'custom onRemoveUser handler in userPortrait'
+      tpl.data.onRemoveUser.apply @, arguments
+    else
+      ticketId = Template.parentData(2)._id
+      Tickets.update {_id: ticketId}, {$pull: {associatedUserIds: this.userId}}
 
 Template.userPortrait.rendered = ->
   this.$('img').error ->

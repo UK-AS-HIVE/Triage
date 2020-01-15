@@ -121,6 +121,10 @@ Meteor.publish 'queueNames', ->
   if @userId
     Queues.find {}, { fields: { 'name': 1, 'memberIds': 1, 'stats': 1 } }
 
+Meteor.publish 'queueDetails', (queueName) ->
+  if @userId
+    Queues.find name: queueName
+
 Meteor.publish 'tags', ->
   if @userId
     Tags.find {}, { fields: { 'name': 1 }, sort: { lastUse: -1 }, limit: 100 }
