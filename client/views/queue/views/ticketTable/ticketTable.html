@@ -16,13 +16,19 @@
         <thead>
           <tr>
             <th class="col-md-1 hidden-xs hidden-print">&nbsp;</th>
-            <th>#</th>
+            {{#each arrayify columns}}
+              {{> ticketTable_columnHeading}}
+            {{/each}}
+            {{#each extraColumns}}
+              {{> ticketTable_columnHeading}}
+            {{/each}}
+            <!--<th>#</th>
             <th class="col-md-4"><span class="field-table-heading" data-sort-key="subject">Subject</span></th>
-            <th class="col-md-2">Requester</th>
+            <th class="col-md-2"><span class="field-table-heading" data-sort-key="requester">Requester</span></th>
             <th class="col-md-2">Associated</th>
             <th class="col-md-1">Status</th>
             <th class="col-md-1 hidden-xs">Updated</th>
-            <th class="col-md-1 hidden-xs">Submitted</th>
+            <th class="col-md-1 hidden-xs">Submitted</th>-->
           </tr>
         </thead>
         <tbody>
@@ -47,4 +53,11 @@
     {{else}}
     {{> loading class="page-loader"}}
   {{/if}}
+</template>
+
+<template name="ticketTable_columnHeading">
+  <th class="{{columnWidth name}}"><span class="field-table-heading" data-sort-key="{{name}}">{{#if sortByIs name}}
+    {{#if sortDirectionIs -1}}
+      <i class="glyphicon glyphicon-chevron-down"></i>{{else}}
+      <i class="glyphicon glyphicon-chevron-up"></i>{{/if}}{{/if}}&nbsp;{{labelFor value}}</span></th>
 </template>

@@ -42,6 +42,8 @@ function queueBeforeAction (router, options) {
   Session.set('pseudoQueue', (options != null ? options.pseudoQueue : void 0) || null);
   Session.set('offset', Number(Iron.query.get('start')) || 0);
   queueName = options != null ? options.queueName : void 0;
+  Session.setDefault('sortBy', 'submittedTimestamp');
+  Session.setDefault('sortDirection', -1);
   router.next();
   if (Meteor.userId()) {
     filter = {
@@ -59,7 +61,7 @@ function queueBeforeAction (router, options) {
       renderedTime = new Date();
       Meteor.subscribe('newTickets', filter, renderedTime);
     }
-    Meteor.subscribe('tickets', filter, Session.get('offset'), limit, {
+    Meteor.subscribe('tickets', filter, Session.get('sortBy'), Session.get('sortDirection'), Session.get('offset'), limit, {
       onReady: function() {
         if (options != null ? options.clearQueueBadge : void 0) {
           Meteor.call('clearQueueBadge', queueName);

@@ -8,7 +8,9 @@ import _ from 'underscore';
 import {Tickets, Queues, TicketFlags, Changelog, Tags, Statuses, QueueBadgeCounts} from '/lib/collections';
 import {Filter} from '/imports/util/filter';
 
-Meteor.publishComposite('tickets', function(filter, offset, limit) {
+Meteor.publishComposite('tickets', function(filter, sortBy, sortDirection, offset, limit) {
+  var sort : any = {};
+  sort[sortBy] = sortDirection;
   var facets, mongoFilter, ref, ticketSet;
   if (offset < 0) {
     offset = 0;
@@ -18,9 +20,7 @@ Meteor.publishComposite('tickets', function(filter, offset, limit) {
   }).fetch(), 'name'), this.userId)) {
     mongoFilter = Filter.toMongoSelector(filter);
     ref = Tickets.findWithFacets(mongoFilter, {
-      sort: {
-        submittedTimestamp: -1
-      },
+      sort: sort,
       limit: limit,
       skip: offset
     }), ticketSet = ref[0], facets = ref[1];
@@ -38,9 +38,7 @@ Meteor.publishComposite('tickets', function(filter, offset, limit) {
           $in: ticketSet
         }
       }, {
-        sort: {
-          submittedTimestamp: -1
-        },
+        sort: sort,
         fields: {
           emailMessageIDs: 0,
           additionalText: 0
