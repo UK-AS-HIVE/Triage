@@ -33,6 +33,7 @@ Meteor.methods
         closedTimestamp: d
         closedByUserId: @userId
         closedByUsername: Meteor.users.findOne(@userId).username
+        lastUpdated: new Date()
       } }
 
       Changelog.direct.insert
