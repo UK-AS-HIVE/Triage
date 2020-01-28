@@ -58,6 +58,6 @@
 <template name="ticketTable_columnHeading">
   <th class="{{columnWidth name}}"><span class="field-table-heading" data-sort-key="{{name}}">{{#if sortByIs name}}
     {{#if sortDirectionIs -1}}
-      <i class="glyphicon glyphicon-chevron-down"></i>{{else}}
-      <i class="glyphicon glyphicon-chevron-up"></i>{{/if}}{{/if}}&nbsp;{{labelFor value}}</span></th>
+      <i class="glyphicon glyphicon-chevron-down" style="display: inline;"></i>{{else}}
+      <i class="glyphicon glyphicon-chevron-up" style="display: inline;"></i>{{/if}}{{/if}}&nbsp;{{labelFor value}}</span></th>
 </template>
