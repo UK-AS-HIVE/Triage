@@ -180,6 +180,7 @@
 </template>
 
 <template name="ticketNoteInput">
+  {{#if allowStatusChange}}
   <div class="row ticket-note-input-area">
     <div class="col-xs-12 col-md-10 col-md-offset-2">
       {{# textareaAutocomplete name="newNote" class='form-control' placeholder="Add a new note..." settings=tokenSettings data-ticket=_id }}{{/textareaAutocomplete}}
@@ -222,6 +223,7 @@
       </div>
     </div>
   </div>
+  {{/if}}
 </template>
 
 <template name="ticketTag">

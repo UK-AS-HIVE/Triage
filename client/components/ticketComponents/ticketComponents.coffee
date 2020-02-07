@@ -44,31 +44,19 @@ Template.ticketInfoPanels.onRendered ->
 
   doc.ondrop = (e) ->
     e.preventDefault()
-    files = e.dataTransfer.files[0]
-    console.log files
-
     for item in e.dataTransfer.items
       entry = item.webkitGetAsEntry()
-      if entry.isFile
-        files = e.dataTransfer.files
-        for file in files
-          FileRegistry.upload file, (fileId) ->
-            file = FileRegistry.findOne(fileId)
-            console.log 'callback FileRegistry.upload(file,cb)'
-            #console.log 'uploaded file', file, ' to ', data
-            Tickets.update data._id, {$addToSet: {attachmentIds: fileId}}
-            Meteor.call 'setFlag', Meteor.userId(), data._id, 'attachment', true
-      else if entry.isDirectory
-        traverse = (item, path) ->
-          path = path || ''
-          if item.isFile
-            item.file (file) ->
-              FileRegistry.upload file, ->
-                console.log 'callback FileRegistry.upload(file,cb)'
-          else if item.isDirectory
-            item.createReader().readEntries (entries) ->
-              traverse entry, path + item.name + '/' for entry in entries
-        traverse entry, ''
+      traverse = (item, path) ->
+        path = path || ''
+        if item.isFile
+          item.file (file) ->
+            FileRegistry.upload file, (fileId) ->
+              Tickets.update data._id, {$addToSet: {attachmentIds: fileId}}
+              Meteor.call 'setFlag', Meteor.userId(), data._id, 'attachment', true
+        else if item.isDirectory
+          item.createReader().readEntries (entries) ->
+            traverse entry, path + item.name + '/' for entry in entries
+      traverse entry, ''
     false
 
 Template.ticketInfoPanels.helpers

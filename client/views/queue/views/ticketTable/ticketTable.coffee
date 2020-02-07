@@ -64,9 +64,9 @@ Template.ticketTable.helpers
 Template.ticketTable_columnHeading.helpers
   columnWidth: (column) ->
     colWidth = 'col-md-' +
-      if column == 'subject'
+      if column == 'title'
         4
-      else if column == 'requester' or column == 'associated'
+      else if column == 'requester' or column == 'associatedUserIds'
         2
       else
         1
