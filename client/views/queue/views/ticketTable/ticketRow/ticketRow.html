@@ -63,5 +63,10 @@
       {{/if}}
     </td>
     <td class="hidden-xs">{{>timeFromNow date=submittedTimestamp}}</td>
+    {{#each c in extraColumns}}
+      <td>
+        {{ getTicketValue c }}
+      </td>
+    {{/each}}
   </tr>
 </template>

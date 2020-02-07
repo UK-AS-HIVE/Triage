@@ -1,31 +1,37 @@
 <template name="formFieldsPanel">
-  <div class="col-xs-12">
-    <div class="panel panel-success more-info-panel">
-      <div class="panel-heading">
-        {{#if collapsed}}
-          <span name="details-glyph" class="glyphicon glyphicon-chevron-right"></span>&nbsp;
-          <a data-toggle="collapse" href="#info-panel-{{_id}}"><strong><span name="details">Show Details</span></strong></a>
-          {{else}}
-          <span name="details-glyph" class="glyphicon glyphicon-chevron-down"></span>&nbsp;
-          <a data-toggle="collapse" href="#info-panel-{{_id}}"><strong><span name="details">Hide Details</span></strong></a>
-        {{/if}}
-      </div>
-      <div id="info-panel-{{_id}}" class="panel-collapse collapse">
-        <div id="panel-body">
-          <table class="table table-default">
-            <tbody>
-              {{#each arrayify formFields}}
-                <tr>
-                  <td class="col-xs-2"><strong>{{name}}</strong></td>
-                  <td class="col-xs-10">{{linkify value}}</td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
+  {{#let ef=(arrayify extraFields)}}
+    {{#if ef}}
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="panel panel-success more-info-panel">
+          <div class="panel-heading">
+            {{#if collapsed}}
+              <span name="details-glyph" class="glyphicon glyphicon-chevron-right"></span>&nbsp;
+              <a data-toggle="collapse" href="#info-panel-{{_id}}"><strong><span name="details">Show Details</span></strong></a>
+              {{else}}
+              <span name="details-glyph" class="glyphicon glyphicon-chevron-down"></span>&nbsp;
+              <a data-toggle="collapse" href="#info-panel-{{_id}}"><strong><span name="details">Hide Details</span></strong></a>
+            {{/if}}
+          </div>
+          <div id="info-panel-{{_id}}" class="panel-collapse collapse">
+            <div id="panel-body">
+              <table class="table table-default">
+                <tbody>
+                  {{#each ef}}
+                    <tr>
+                      <td class="col-xs-2"><strong>{{name}}</strong></td>
+                      <td class="col-xs-10">{{linkify value}}</td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+    {{/if}}
+  {{/let}}
 </template>
 
 <template name="ticketNoteArea">

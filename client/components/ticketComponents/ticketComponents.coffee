@@ -304,6 +304,8 @@ Template.formFieldsPanel.onCreated ->
 
 Template.formFieldsPanel.helpers
   collapsed: -> Template.instance().panelIsCollapsed.get()
+  extraFields: ->
+    _.omit @, '_id', Tickets.simpleSchema()._schemaKeys
 
 Template.formFieldsPanel.events
   'show.bs.collapse': (e, tpl) ->

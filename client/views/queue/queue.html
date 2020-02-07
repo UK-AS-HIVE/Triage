@@ -19,6 +19,11 @@
           <button class="btn btn-primary" type="button" data-action="showNewTicketModal">Add New Ticket</button>
           <button class="btn btn-success" type="button" data-action="openQuickAdd">Quick Add Ticket</button>
         </div>
+        {{#if isQueueManager}}
+        <div class="pull-right">
+          <a href="/queue/{{queueName}}/manage"><button class="btn btn-default" type="button"><i class="glyphicon glyphicon-cog"></i></button></a>
+        </div>
+        {{/if}}
       {{else}}
         <a href="{{submissionUrl}}"><button class="btn btn-primary">Submit a Ticket</button></a>
       {{/if}}

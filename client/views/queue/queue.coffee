@@ -28,6 +28,9 @@ Template.queue.helpers
       if @name is Session.get('queueName') then "selected"
   submissionUrl: ->
     Meteor.settings.public.ticketSubmissionUrl
+  isQueueManager: ->
+    managerIds = Queues.findOne({name: Session.get('queueName')})?.managerIds
+    managerIds? and managerIds.indexOf(Meteor.userId()) > -1
 
 Template.queue.events
   'click button[data-action=showNewTicketModal]': (e, tpl) ->

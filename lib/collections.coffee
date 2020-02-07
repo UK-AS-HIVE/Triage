@@ -27,6 +27,7 @@
     optional: true
     type: [String]
     min: 1
+    label: 'Tags'
   submissionData:
     type: Object
     optional: true
@@ -42,10 +43,10 @@
     type: String
   submittedTimestamp:
     type: new Date()
-    defaultValue: Date.now
+    defaultValue: new Date()
   lastUpdated:
     type: new Date()
-    defaultValue: Date.now
+    optional: true
   timeToClose:
     optional: true
     type: Number # in seconds
@@ -203,6 +204,13 @@
   'settings.emailIngestionPrefix':
     type: String
     optional: true
+  'settings.templatedResponses':
+    type: [Object]
+    optional: true
+  'settings.templatedResponses.$.title':
+    type: String
+  'settings.templatedResponses.$.text':
+    type: String
 
 notificationSettingDefaults =
   submitted: true

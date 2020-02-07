@@ -54,5 +54,23 @@ Migrations.add
       ticketNumber: "text"
       formFields: "text"
 
+Migrations.add
+  version: 7
+  up: ->
+    Tickets.find({formFields: {$exists: 1}}).forEach (t) ->
+      console.log 'Migrating ticket ', t.ticketNumber
+      t = _.extend (_.omit t, 'formFields'), t.formFields
+      Tickets.direct.update {_id: t._id}, t, {bypassCollection2: true}
+  down: ->
+    Tickets.find({}).forEach (t) ->
+      extraFields = _.omit t, ['_id'].concat(Tickets.simpleSchema()._schemaKeys)
+      t = _.omit t, (_.keys extraFields)
+      id = t._id
+      delete t._id
+      t.formFields = extraFields
+      console.log 'Reverting migrated ticket ', t.ticketNumber
+      Tickets.direct.update {_id: id}, t, {validate: false, filter: false}
+
 Meteor.startup ->
-  Migrations.migrateTo(6)
+  Migrations.migrateTo(7)
+

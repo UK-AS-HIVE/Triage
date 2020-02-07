@@ -58,3 +58,6 @@ Template.ticketRow.helpers
         noMatchTemplate: Template.noMatchStatusPill
       ]
     }
+  extraColumns: ->
+    Queues.findOne({name:Session.get('queueName')})?.settings?.extraColumns
+  getTicketValue: (c) -> @[c]

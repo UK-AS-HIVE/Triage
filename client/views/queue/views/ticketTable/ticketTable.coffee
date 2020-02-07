@@ -60,6 +60,10 @@ Template.ticketTable.helpers
       status: 'Status'
       lastUpdated: 'Updated'
       submittedTimestamp: 'Submitted'
+  extraColumns: ->
+    Queues.findOne({name:Session.get('queueName')})?.settings?.extraColumns.map (v) ->
+      name: v
+      value: v
 
 Template.ticketTable_columnHeading.helpers
   columnWidth: (column) ->
