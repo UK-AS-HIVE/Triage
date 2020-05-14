@@ -167,7 +167,6 @@ Router.map ->
         submittedTimestamp: Date.now()
         queueName: @request.body.queueName || 'Triage'
         tags: @request.body.tags?.split(/[;\n]/).map((t) => t.trim()).filter((t) => t.length) || []
-        formFields: formFields
         attachmentIds: _.pluck(@request.files, '_id')
 
       if @request.body.on_behalf_of?.length
@@ -179,7 +178,9 @@ Router.map ->
           ticket.authorName = @request.body.on_behalf_of.toLowerCase()
           ticket.authorId = behalfOfId
 
-      Tickets.insert ticket
+      ticketId = Tickets.insert ticket
+
+      Tickets.direct.update {_id: ticketId}, {$set: formFields}, {bypassCollection2: true}
 
       @response.end 'Submission successful.'
 
