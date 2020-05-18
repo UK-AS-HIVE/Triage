@@ -49,7 +49,7 @@
       <div class="panel-body">
         <p>Select extra ticket fields to include in the ticket list table</p>
         {{#each extraColumn in extraColumns}}
-          <input type="checkbox" class="extra-column-checkbox" data-value="{{extraColumn}}" checked={{checkedIf extraColumn}}> {{labelFor extraColumn}}
+          <input type="checkbox" class="extra-column-checkbox" data-value="{{extraColumn}}" checked={{checkedIf extraColumn}}> {{labelFor extraColumn}}<br>
         {{/each}}
       </div>
     </div>
