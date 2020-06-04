@@ -169,9 +169,11 @@ Router.map ->
         tags: @request.body.tags?.split(/[;\n]/).map((t) => t.trim()).filter((t) => t.length) || []
         attachmentIds: _.pluck(@request.files, '_id')
 
+
+
       if @request.body.on_behalf_of?.length
-        ticket.formFields['Submitted by'] = ticket.authorName
-        ticket.formFields['On behalf of'] = @request.body.on_behalf_of
+        formFields['Submitted by'] = ticket.authorName
+        formFields['On behalf of'] = @request.body.on_behalf_of
         behalfOfId = try Meteor.call 'checkUsername', @request.body.on_behalf_of
         if behalfOfId
           ticket.submittedByUserId = ticket.authorId
