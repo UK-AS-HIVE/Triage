@@ -305,7 +305,18 @@ Template.formFieldsPanel.onCreated ->
 Template.formFieldsPanel.helpers
   collapsed: -> Template.instance().panelIsCollapsed.get()
   extraFields: ->
-    _.omit @, '_id', Tickets.simpleSchema()._schemaKeys
+    if @extraFieldOrder?
+      @extraFieldOrder.map (f) =>
+        name: f
+        value: @[f]
+    else
+      unorderedExtraFields = _.omit @, '_id', Tickets.simpleSchema()._schemaKeys
+      result = []
+      for k,v of unorderedExtraFields
+        result.push
+          name: k
+          value: v
+      result
 
 Template.formFieldsPanel.events
   'show.bs.collapse': (e, tpl) ->

@@ -182,6 +182,8 @@ Router.map ->
 
       ticketId = Tickets.insert ticket
 
+      formFields.extraFieldOrder = Object.keys formFields
+
       Tickets.direct.update {_id: ticketId}, {$set: formFields}, {bypassCollection2: true}
 
       @response.end 'Submission successful.'
