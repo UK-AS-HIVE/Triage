@@ -16,7 +16,7 @@ hive:file-registry
 reywood:publish-composite
 natestrauser:select2
 mizzao:autocomplete
-sakulstra:aggregate
+meteorhacks:aggregate
 cottz:iron-query
 matb33:collection-hooks
 mizzao:user-status
