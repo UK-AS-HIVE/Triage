@@ -228,15 +228,29 @@ getEventMessagesFromUpdate = (userId, doc, fn, modifier) ->
 
 getTicketInformationForEmail = (ticket) ->
   info = "<strong>#{ticket.authorName}'s original ticket body was</strong>:<br>#{ticket.body}"
-  if ticket.formFields
+  extraFields =
+    if ticket.extraFieldOrder?
+      ticket.extraFieldOrder.map (f) =>
+        name: f
+        value: ticket[f]
+    else
+      unorderedExtraFields = _.omit ticket, '_id', Tickets.simpleSchema()._schemaKeys
+      result = []
+      for k,v of unorderedExtraFields
+        result.push
+          name: k
+          value: v
+      result
+
+  if extraFields.length
     info += "
       <br><strong>Additional details:</strong>
       <table border=1>"
 
-    for k,v of ticket.formFields
+    for f in extraFields
       info += "<tr>
-      <td><strong>#{k}</strong></td>
-      <td>#{v}</td>
+      <td><strong>#{f.name}</strong></td>
+      <td>#{f.value}</td>
       </tr>"
     info += "</table>"
 
