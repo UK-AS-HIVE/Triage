@@ -17,6 +17,7 @@ Meteor.publishComposite 'tickets', (filter, sortBy, sortDirection, offset, limit
         fields:
           emailMessageIDs: 0
           additionalText: 0
+          extraFieldOrder: 0
     children: [
       {
         find: (ticket) ->
@@ -44,6 +45,7 @@ Meteor.publishComposite 'newTickets', (filter, time) ->
         fields:
           emailMessageIDs: 0
           additionalText: 0
+          extraFieldOrder: 0
     children: [
       {
         find: (ticket) ->
