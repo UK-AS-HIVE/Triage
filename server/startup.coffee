@@ -10,7 +10,13 @@ Meteor.startup ->
     userId: 1
 
   Meteor.settings.queues.forEach (x) ->
-    Queues.upsert { name: x.name }, { $set: { securityGroups: x.securityGroups, settings: x.settings } }
+    setter =
+      securityGroups: x.securityGroups
+    if x.settings?
+      Object.keys(x.settings).forEach (k) ->
+        setter["settings.#{k}"] = x.settings[k]
+    console.log "updating settings for #{x.name}", setter
+    Queues.upsert { name: x.name }, { $set: setter }
     queueAdminIds = _.compact x.admins.map (queueAdmin) ->
       Meteor.users.findOne({username: queueAdmin})?._id
     console.log "adding queue managers for #{x.name}", queueAdminIds
