@@ -1,3 +1,21 @@
+getFieldSpecifier = (filter) ->
+  fields =
+    associatedUserIds: 1
+    authorId: 1
+    authorName: 1
+    lastUpdated: 1
+    queueName: 1
+    status: 1
+    submittedTimestamp: 1
+    submittedByUserId: 1
+    ticketNumber: 1
+    title: 1
+  if String filter.queueName == "[object String]"
+    console.log "adding extra columns from queue #{filter.queueName}"
+    Queues.findOne({name: filter.queueName})?.settings?.extraColumns?.forEach (ec) ->
+      fields[ec] = 1
+  fields
+
 Meteor.publishComposite 'tickets', (filter, sortBy, sortDirection, offset, limit) ->
   sort = {}
   sort[sortBy] = sortDirection
@@ -8,16 +26,15 @@ Meteor.publishComposite 'tickets', (filter, sortBy, sortDirection, offset, limit
     ticketSet = _.pluck ticketSet.fetch(), '_id'
   else
     ticketSet = []
+  fields = getFieldSpecifier filter
+  console.log 'publishing fields: ', fields
   {
     find: () ->
       Counts.publish(this, 'ticketCount', Tickets.find(mongoFilter), { noReady: true })
 
       Tickets.find { _id: { $in: ticketSet } },
         sort: sort
-        fields:
-          emailMessageIDs: 0
-          additionalText: 0
-          extraFieldOrder: 0
+        fields: fields
     children: [
       {
         find: (ticket) ->
@@ -42,10 +59,7 @@ Meteor.publishComposite 'newTickets', (filter, time) ->
       Tickets.find mongoFilter,
         sort:
           submittedTimestamp: -1
-        fields:
-          emailMessageIDs: 0
-          additionalText: 0
-          extraFieldOrder: 0
+        fields: getFieldSpecifier filter
     children: [
       {
         find: (ticket) ->
