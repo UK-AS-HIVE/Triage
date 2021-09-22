@@ -140,7 +140,7 @@ Template.queue.rendered = ->
       filter.userId = Meteor.userId()
     
     mongoFilter = Filter.toMongoSelector filter
-    _.extend mongoFilter, {submittedTimestamp: {$gt: renderedTime}}
+    #_.extend mongoFilter, {submittedTimestamp: {$gt: renderedTime}}
     Tickets.find(mongoFilter).observe
       added: (ticket) ->
         if Session.get('offset') < 1

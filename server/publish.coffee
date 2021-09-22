@@ -22,8 +22,9 @@ Meteor.publishComposite 'tickets', (filter, sortBy, sortDirection, offset, limit
   if offset < 0 then offset = 0
   if Filter.verifyFilterObject filter, _.pluck(Queues.find({memberIds: @userId}).fetch(), 'name'), @userId
     mongoFilter = Filter.toMongoSelector filter
-    [ticketSet, facets] = Tickets.findWithFacets(mongoFilter, {sort: sort, limit: limit, skip: offset})
-    ticketSet = _.pluck ticketSet.fetch(), '_id'
+    [ticketSet, facets] = Tickets.findWithFacets(mongoFilter, {sort: sort, limit: limit, skip: offset, fields: {_id: 1}})
+    ticketSet = ticketSet.map (t) -> t._id
+    #ticketSet = _.pluck ticketSet.fetch(), '_id'
   else
     ticketSet = []
   fields = getFieldSpecifier filter
@@ -34,7 +35,9 @@ Meteor.publishComposite 'tickets', (filter, sortBy, sortDirection, offset, limit
 
       Tickets.find { _id: { $in: ticketSet } },
         sort: sort
-        fields: fields
+        fields: #fields
+          _id: 1
+          queueName: 1
     children: [
       {
         find: (ticket) ->
